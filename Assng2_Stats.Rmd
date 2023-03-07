@@ -120,10 +120,24 @@ plot(x, y)
 #Note you may find it helpful to use the data.frame() function to create a single data set containing both X and Y.
 
 ```{r}
+#i.
 df2 = data.frame(y,x)
-glm.fit = glm(y~x)
-cv.glm(Data,glm.fit)$delta[1]
 
+set.seed(101)
+glm.fit = glm(y~x)
+cv.glm(df2,glm.fit)$delta[1]
+
+#ii.
+fit.glm.2 <- glm(y~ poly(x,2))
+cv.glm(df2, fit.glm.2)$delta[1]
+
+#iii.
+fit.glm.3 <- glm(y~poly(x,3))
+cv.glm(df2, fit.glm.3)$delta[1]
+
+#iv 
+fit.glm.4 <- glm(y~poly(x,4))
+cv.glm(df2, fit.glm.4)$delta[1]
 
 ```
 
