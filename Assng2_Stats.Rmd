@@ -1,0 +1,130 @@
+---
+title: "Assng2_Stats"
+output: github_document
+author:
+- name: Zuhaa 
+- name: Saira 
+- name: Lisa
+date: "2023-03-01"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+#install.packages("lars")
+library(lars)
+library(tidyverse)
+#install.packages("glmnet")
+library(glmnet)
+#install.packages("leaps")
+library(leaps)
+```
+
+## Problem 1 
+
+```{r}
+set.seed(400)
+X <- rnorm(100)
+e <- rnorm(100)
+Y <- 1+2*X + 3*X^2 - 4*X^3 + e
+
+df= data.frame(Y, X)
+
+```
+
+```{r}
+
+mod <- regsubsets(Y~poly(X,10), data=df) 
+(mod_summ = summary(mod))
+
+plot(mod_summ$rsq, type="b")
+
+# Set up a 2x2 grid so we can look at 4 plots at once
+par(mfrow = c(2,2))
+plot(mod_summ$rss, xlab = "Number of Variables", ylab = "RSS", type = "l")
+plot(mod_summ$adjr2, xlab = "Number of Variables", ylab = "Adjusted RSq", type = "l")
+
+adj_r2_max = which.max(mod_summ$adjr2) # 11
+# The points() command works like the plot() command, except that it puts points 
+# on a plot that has already been created instead of creating a new plot
+points(adj_r2_max, mod_summ$adjr2[adj_r2_max], col ="red", cex = 2, pch = 20)
+
+plot(mod_summ$cp, xlab = "Number of Variables", ylab = "Cp", type = "l")
+cp_min = which.min(mod_summ$cp) # 10
+points(cp_min, mod_summ$cp[cp_min], col = "red", cex = 2, pch = 20)
+
+plot(mod_summ$bic, xlab = "Number of Variables", ylab = "BIC", type = "l")
+bic_min = which.min(mod_summ$bic) # 6
+points(bic_min, mod_summ$bic[bic_min], col = "red", cex = 2, pch = 20)
+
+
+
+
+```
+
+From this model we see that the precitor X, by itself is significant. It is always included in the model. From the plots of various metrics of model aqeqancy we see that the best model is one with three predictor vairables. from the summary output we see that this is the model 
+
+```{r}
+coef(mod, 3)
+```
+
+## (d) 
+
+**Repeat (c), using forward stepwise selection and also using backwards stepwise selection. How does your answer compare to the results in (c)?**
+
+
+```{r}
+# Forward
+regfit_fwd = regsubsets(Y~poly(X,10), data=df, nvmax = 19, method = "forward")
+summary(regfit_fwd)
+```
+
+
+```{r}
+# Backward
+regfit_bwd = regsubsets(Y~poly(X,10), data=df, nvmax = 19, method = "backward")
+summary(regfit_bwd)
+coef(regfit_bwd, 3)
+```
+
+
+
+## Q2 
+
+**We will now perform cross-validation on a simulated data set**
+a) Generate a simulated data set as follows: 
+
+```{r}
+set.seed (1)
+x <- rnorm (100)
+y <- x - 2 * x^2 + rnorm (100)
+```
+
+In this data set, what is n and what is p? Write out the model used to generate the data in equation form.
+
+The n is 100, given that there are 100 observed (y) values. The p is 1 since there is only one predector variable (x).
+
+$y_i$ = $\beta_0$ + $\beta_1$$x$ - $\beta_2$$x^2$ + $\epsilon_i$
+
+**(b) Create a scatterplot of X against Y . Comment on what you find.**
+
+
+```{r}
+plot(x, y)
+
+```
+
+from the plot we see that the relationship between x and y appears more quardrtic then linear. 
+
+
+**c) Set a random seed, and then compute the LOOCV errors that result from fitting the following four models using least squares:**
+
+```{r}
+df2 = data.frame(y,x)
+
+
+```
+
+
+
+
+
