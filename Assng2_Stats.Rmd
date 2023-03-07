@@ -68,7 +68,7 @@ From this model we see that the precitor X, by itself is significant. It is alwa
 coef(mod, 3)
 ```
 
-## (d) 
+# (d) 
 
 **Repeat (c), using forward stepwise selection and also using backwards stepwise selection. How does your answer compare to the results in (c)?**
 
