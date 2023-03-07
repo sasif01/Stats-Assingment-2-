@@ -25,7 +25,7 @@ library(leaps)
 set.seed(400)
 X <- rnorm(100)
 e <- rnorm(100)
-Y <- 1+2*X + 3*X^2 - 4*X^3 + e
+Y <- 1+2*X + 3*X - 4*X + e
 
 df= data.frame(Y, X)
 
