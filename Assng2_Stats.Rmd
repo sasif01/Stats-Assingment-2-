@@ -7,7 +7,6 @@ author:
 - name: Lisa
 date: "2023-03-01"
 ---
-#########################
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 #install.packages("lars")
@@ -17,6 +16,8 @@ library(tidyverse)
 library(glmnet)
 #install.packages("leaps")
 library(leaps)
+#install.packages("boot")
+library(boot)
 ```
 
 ## Problem 1 
@@ -143,12 +144,28 @@ cv.glm(df2, fit.glm.4)$delta[1]
 
 #(d) Repeat (c) using another random seed and report your results. Are your results the same as what you got in (c)? Why?
 ```{r}
+set.seed(102)
+glm.fit = glm(y~x)
+cv.glm(df2,glm.fit)$delta[1]
 
+#ii.
+fit.glm.2 <- glm(y~ poly(x,2))
+cv.glm(df2, fit.glm.2)$delta[1]
+
+#iii.
+fit.glm.3 <- glm(y~poly(x,3))
+cv.glm(df2, fit.glm.3)$delta[1]
+
+#iv 
+fit.glm.4 <- glm(y~poly(x,4))
+cv.glm(df2, fit.glm.4)$delta[1]
+
+#The results after changing the random seed are the same since LOOCV still evaluated all n folds containing a single observation regardless of the seed.
 ```
 
 #(e) Which of the models in (c) had the smallest LOOCV error? Is this what you expected? Explain your answer.
 ```{r}
-
+#According to the plot from 2b., we expected the true form of Y is quadratic. Therefore, it is expected that the lowest LOOCV test error rate is the quadratic polynomial. 
 ```
 
 #(f) Comment on the statistical significance of the coefficient estimates that results from fitting each of the models in (c) using least squares. Do these results agree with the conclusions drawn based on the cross-validation results?
