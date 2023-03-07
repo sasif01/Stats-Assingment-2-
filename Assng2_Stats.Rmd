@@ -170,6 +170,7 @@ cv.glm(df2, fit.glm.4)$delta[1]
 
 #(f) Comment on the statistical significance of the coefficient estimates that results from fitting each of the models in (c) using least squares. Do these results agree with the conclusions drawn based on the cross-validation results?
 ```{r}
-
+summary(fit.glm.4)
+#The p-values show that linear and quadratic values are statistically significant while cubic and 4th degree values are not. This result is consistent with the CV results above. 
 ```
 
