@@ -121,6 +121,8 @@ plot(x, y)
 
 ```{r}
 df2 = data.frame(y,x)
+glm.fit = glm(y~x)
+cv.glm(Data,glm.fit)$delta[1]
 
 
 ```
@@ -140,4 +142,3 @@ df2 = data.frame(y,x)
 
 ```
 
-#This is Lisa trying to see if it's working
