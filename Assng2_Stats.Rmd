@@ -20,19 +20,22 @@ library(leaps)
 ```
 
 ## Problem 1 
-
+#(1) In this exercise, we will generate simulated data, and will then use this data to perform best subset selection.
+#(a) Use the rnorm() function to generate a predictor X of length n = 100, as well as a noise vector e of length n = 100.
 ```{r}
 set.seed(400)
 X <- rnorm(100)
 e <- rnorm(100)
-Y <- 1+2*X + 3*X - 4*X + e
-
-df= data.frame(Y, X)
 
 ```
 
+#(b) Generate a response vector Y of length n = 100 according to the model ... are constants of your choice.
 ```{r}
-
+Y <- 1+2*X + 3*X - 4*X + e
+```
+#(c) Use the regsubsets() function to perform best subset selection in order to choose the best model containing the predictors X,X2, . . . ,X10. What is the best model obtained according to AIC, BIC, and adjusted R2? Show some plots to provide evidence for your answer, and report the coefficients of the best model obtained. Note you will need to use the data.frame() function to create a single data set containing both X and Y.
+```{r}
+df= data.frame(Y, X)
 mod <- regsubsets(Y~poly(X,10), data=df) 
 (mod_summ = summary(mod))
 
@@ -55,8 +58,6 @@ points(cp_min, mod_summ$cp[cp_min], col = "red", cex = 2, pch = 20)
 plot(mod_summ$bic, xlab = "Number of Variables", ylab = "BIC", type = "l")
 bic_min = which.min(mod_summ$bic) # 6
 points(bic_min, mod_summ$bic[bic_min], col = "red", cex = 2, pch = 20)
-
-
 
 
 ```
@@ -99,24 +100,24 @@ x <- rnorm (100)
 y <- x - 2 * x^2 + rnorm (100)
 ```
 
-In this data set, what is n and what is p? Write out the model used to generate the data in equation form.
+#In this data set, what is n and what is p? Write out the model used to generate the data in equation form.
+```{r}
+#The n is 100, given that there are 100 observed (y) values. The p is 1 since there is only one predector variable (x).
+#$y_i$ = $\beta_0$ + $\beta_1$$x$ - $\beta_2$$x^2$ + $\epsilon_i$
 
-The n is 100, given that there are 100 observed (y) values. The p is 1 since there is only one predector variable (x).
-
-$y_i$ = $\beta_0$ + $\beta_1$$x$ - $\beta_2$$x^2$ + $\epsilon_i$
+```
 
 **(b) Create a scatterplot of X against Y . Comment on what you find.**
 
 
 ```{r}
 plot(x, y)
+#from the plot we see that the relationship between x and y appears more quardrtic then linear.
 
 ```
 
-from the plot we see that the relationship between x and y appears more quardrtic then linear. 
-
-
 **c) Set a random seed, and then compute the LOOCV errors that result from fitting the following four models using least squares:**
+#Note you may find it helpful to use the data.frame() function to create a single data set containing both X and Y.
 
 ```{r}
 df2 = data.frame(y,x)
@@ -124,7 +125,17 @@ df2 = data.frame(y,x)
 
 ```
 
+#(d) Repeat (c) using another random seed and report your results. Are your results the same as what you got in (c)? Why?
+```{r}
 
+```
 
+#(e) Which of the models in (c) had the smallest LOOCV error? Is this what you expected? Explain your answer.
+```{r}
 
+```
 
+#(f) Comment on the statistical significance of the coefficient estimates that results from fitting each of the models in (c) using least squares. Do these results agree with the conclusions drawn based on the cross-validation results?
+```{r}
+
+```
