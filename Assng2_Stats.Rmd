@@ -37,7 +37,7 @@ Y <- 1+2*X + 3*X^2 - 4*X^3 + e
 #(c) Use the regsubsets() function to perform best subset selection in order to choose the best model containing the predictors X,X2, . . . ,X10. What is the best model obtained according to AIC, BIC, and adjusted R2? Show some plots to provide evidence for your answer, and report the coefficients of the best model obtained. Note you will need to use the data.frame() function to create a single data set containing both X and Y.
 ```{r}
 df= data.frame(Y, X)
-mod <- regsubsets(Y~poly(X,10), data=df) 
+mod <- regsubsets(Y~poly(X,10), data=df, nvmax=10) 
 (mod_summ = summary(mod))
 
 plot(mod_summ$rsq, type="b")
@@ -76,14 +76,14 @@ coef(mod, 3)
 
 ```{r}
 # Forward
-regfit_fwd = regsubsets(Y~poly(X,10), data=df, nvmax = 19, method = "forward")
+regfit_fwd = regsubsets(Y~poly(X,10), data=df, nvmax = 10, method = "forward")
 summary(regfit_fwd)
 ```
 
 
 ```{r}
 # Backward
-regfit_bwd = regsubsets(Y~poly(X,10), data=df, nvmax = 19, method = "backward")
+regfit_bwd = regsubsets(Y~poly(X,10), data=df, nvmax = 10, method = "backward")
 summary(regfit_bwd)
 coef(regfit_bwd, 3)
 ```
@@ -103,7 +103,7 @@ y <- x - 2 * x^2 + rnorm (100)
 
 #In this data set, what is n and what is p? Write out the model used to generate the data in equation form.
 ```{r}
-#The n is 100, given that there are 100 observed (y) values. The p is 1 since there is only one predector variable (x).
+#The n is 100, given that there are 100 observed (y) values. The p is 1 since there is only one predictor variable (x).
 #$y_i$ = $\beta_0$ + $\beta_1$$x$ - $\beta_2$$x^2$ + $\epsilon_i$
 
 ```
@@ -171,6 +171,6 @@ cv.glm(df2, fit.glm.4)$delta[1]
 #(f) Comment on the statistical significance of the coefficient estimates that results from fitting each of the models in (c) using least squares. Do these results agree with the conclusions drawn based on the cross-validation results?
 ```{r}
 summary(fit.glm.4)
-#The p-values show that linear and quadratic values are statistically significant while cubic and 4th degree values are not. This result is consistent with the CV results above. 
+#The p-values show that linear and quadratic values are statistically significant while cubic and 4th degree values are not. This result is consistent with the cross validation results above. 
 ```
 
