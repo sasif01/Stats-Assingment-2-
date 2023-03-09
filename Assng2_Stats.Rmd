@@ -79,7 +79,9 @@ points(bic_min, mod_summ$bic[bic_min], col = "red", cex = 2, pch = 20)
 
 ```
 
-From this model we see that the predictor vairable X, by itself, is always significant. It is always included in the model. From the plots of various metrics of model aqeqancy we see that the best model is one with three predictor vairables. from the summary output we see that this is the model 
+From this model we see that the predictor variable X, by itself, is always significant. It is always included in the model. From the different metrics, we get slightly different best-fit models. The model with the lowest Cp score included 4 predictor (X^1, X^2, X^3, X^10), while the lowest BIC score only included 3 (X^1, X^2, X^3). Additional, the model with the highest adjusted R-squared included 5 predictors (X^1, X^2, X^3, X^6, X^10). 
+Given that really all metrics agree that the first three preditors need be included (X^1, X^2, X^3)
+From the plots of various metrics of model aqeqancy we see that the best model is one with three predictor vairables. from the summary output we see that this is the model 
 
 ```{r}
 coef(mod, 3)
@@ -119,7 +121,7 @@ y <- x - 2 * x^2 + rnorm (100)
 
 #In this data set, what is n and what is p? Write out the model used to generate the data in equation form.
 ```{r}
-#The n is 100, given that there are 100 observed (y) values. The p is 1 since there is only one predictor variable (x).
+#The n is 100, given that there are 100 observed (y) values. The p is 2 since there is only one predictor variable (x).
 #$y_i$ = $\beta_0$ + $\beta_1$$x$ - $\beta_2$$x^2$ + $\epsilon_i$
 
 ```
