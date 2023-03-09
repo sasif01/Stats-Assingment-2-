@@ -34,39 +34,52 @@ e <- rnorm(100)
 ```{r}
 Y <- 1+2*X + 3*X^2 - 4*X^3 + e
 ```
+
 #(c) Use the regsubsets() function to perform best subset selection in order to choose the best model containing the predictors X,X2, . . . ,X10. What is the best model obtained according to AIC, BIC, and adjusted R2? Show some plots to provide evidence for your answer, and report the coefficients of the best model obtained. Note you will need to use the data.frame() function to create a single data set containing both X and Y.
+
 ```{r}
-#Creating a dataframe using Y and X
+#Creating a data-frame using Y and X
 df= data.frame(Y, X)
 
-#Using regsubset function to determine the best ten-variable model
+#Using regsubset function to determine the best, up to ten variable models
 mod <- regsubsets(Y~poly(X,10), data=df, nvmax=10) 
 (mod_summ = summary(mod))
 
-plot(mod_summ$rsq, type="b")
-
 # Set up a 2x2 grid so we can look at 4 plots at once
 par(mfrow = c(2,2))
-plot(mod_summ$rss, xlab = "Number of Variables", ylab = "RSS", type = "l")
-plot(mod_summ$adjr2, xlab = "Number of Variables", ylab = "Adjusted RSq", type = "l")
 
-adj_r2_max = which.max(mod_summ$adjr2) # 11
-# The points() command works like the plot() command, except that it puts points 
-# on a plot that has already been created instead of creating a new plot
+#plotting the Residual Sums of Squares for each of the ten polynomial models.
+plot(mod_summ$rss, xlab = "Number of Variables", ylab = "RSS", type = "l")
+#Determines the minimum RSS value from all models - 10
+rss_min = which.min(mod_summ$rss)
+#Adding the min value to the plot
+points(rss_min, mod_summ$rss[rss_min], col ="red", cex = 2, pch = 20)
+
+
+#plotting the Adjusted R^2 for each of the ten polynomial models.
+plot(mod_summ$adjr2, xlab = "Number of Variables", ylab = "Adjusted RSq", type = "l")
+#Determines the maximum Adjusted R^2 value from all models - 5 
+adj_r2_max = which.max(mod_summ$adjr2)
+#Adding the max value to the plot
 points(adj_r2_max, mod_summ$adjr2[adj_r2_max], col ="red", cex = 2, pch = 20)
 
+#plotting the Cp for each of the ten polynomial models.
 plot(mod_summ$cp, xlab = "Number of Variables", ylab = "Cp", type = "l")
-cp_min = which.min(mod_summ$cp) # 10
+#Determining the minimum Cp values across all ten models - 4
+cp_min = which.min(mod_summ$cp) 
+#Adding the min value to the plot
 points(cp_min, mod_summ$cp[cp_min], col = "red", cex = 2, pch = 20)
 
+#plotting the BIC for each of the ten polynomial models.
 plot(mod_summ$bic, xlab = "Number of Variables", ylab = "BIC", type = "l")
-bic_min = which.min(mod_summ$bic) # 6
+#Determining the minimum BIN values across all ten models - 3
+bic_min = which.min(mod_summ$bic)
+#Adding the min value to the plot
 points(bic_min, mod_summ$bic[bic_min], col = "red", cex = 2, pch = 20)
-
 
 ```
 
-From this model we see that the precitor X, by itself is significant. It is always included in the model. From the plots of various metrics of model aqeqancy we see that the best model is one with three predictor vairables. from the summary output we see that this is the model 
+From this model we see that the predictor vairable X, by itself, is always significant. It is always included in the model. From the plots of various metrics of model aqeqancy we see that the best model is one with three predictor vairables. from the summary output we see that this is the model 
 
 ```{r}
 coef(mod, 3)
