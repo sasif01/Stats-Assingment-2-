@@ -140,10 +140,10 @@ plot(x, y)
 #Note you may find it helpful to use the data.frame() function to create a single data set containing both X and Y.
 
 ```{r}
-#i.
 df2 = data.frame(y,x)
-
 set.seed(101)
+
+#i.
 glm.fit = glm(y~x)
 cv.glm(df2,glm.fit)$delta[1]
 
