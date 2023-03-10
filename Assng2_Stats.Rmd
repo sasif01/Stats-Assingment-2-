@@ -158,21 +158,24 @@ y <- x - 2 * x^2 + rnorm (100)
 ```
 
 #In this data set, what is n and what is p? Write out the model used to generate the data in equation form.
-```{r}
-#The n is 100, given that there are 100 observed (y) values. The p is 2 since there is only one predictor variable (x).
-#$y_i$ = $\beta_0$ + $\beta_1$$x$ - $\beta_2$$x^2$ + $\epsilon_i$
 
-```
+The n is 100, given that there are 100 observed (y) values. The p is 2 since there are two variables/x's (x) in the model.
+
+The equation form of this is given by, 
+
+$y_i$ = $\beta_0$ + $\beta_1$$x$ - $\beta_2$$x^2$ + $\epsilon_i$
+where $\beta_0$ = 0, $\beta_1$ = 1,  $\beta_2$ = 2 
+
+
 
 **(b) Create a scatterplot of X against Y . Comment on what you find.**
+
+From the plot we see that the relationship between x and y appears more quadratic/curved then linear. X range from -2 to 2, and Y from -8 to 2 
 
 
 ```{r}
 #Adding the plot
 plot(x, y)
-#from the plot we see that the relationship between x and y appears more quadratic then linear. 
-#X range from -2 to 2, and Y from -8 to 2 
-
 ```
 
 **c) Set a random seed, and then compute the LOOCV errors that result from fitting the following four models using least squares:**
