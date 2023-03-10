@@ -20,9 +20,12 @@ library(leaps)
 library(boot)
 ```
 
-## Problem 1 
+## Q 1 
 #(1) In this exercise, we will generate simulated data, and will then use this data to perform best subset selection.
 #(a) Use the rnorm() function to generate a predictor X of length n = 100, as well as a noise vector e of length n = 100.
+
+Two vectors are created, X is a predictor vector, e is a noise vector. Both vectors are generated using values from the standard normal distribution, centered around 0 with standard deviation of 1. 
+
 ```{r}
 set.seed(400)
 X <- rnorm(100)
@@ -31,6 +34,9 @@ e <- rnorm(100)
 ```
 
 #(b) Generate a response vector Y of length n = 100 according to the model ... are constants of your choice.
+
+Our chosen constants are ??0 = 1,  ??1 = 2, ??2 = 3, ??3 = 4. Using these, we generate a response vector, Y, of length 100.
+
 ```{r}
 Y <- 1+2*X + 3*X^2 - 4*X^3 + e
 ```
@@ -263,5 +269,11 @@ summary(fit.glm.3)
 
 #Only X and X^2 are significant (p-value <0.05), adding in X^3 and X^4 does not improve the fit of the mode. AIC is higher as well (282.3)
 summary(fit.glm.4)
+```
+```{r}
+#Plotting the polynomial regression model on top of the data
+ggplot(df2, aes(x,y)) +
+  geom_point() +
+  geom_smooth(method="glm", formula = y~ poly(x,2), se=F)
 ```
 
