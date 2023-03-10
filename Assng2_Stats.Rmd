@@ -1,10 +1,7 @@
 ---
 title: "Assng2_Stats"
 output: github_document
-author:
-- name: Zuhaa 
-- name: Saira 
-- name: Lisa
+author: Zuhaa, Saira, Lisa
 date: "2023-03-01"
 ---
 ```{r setup, include=FALSE}
