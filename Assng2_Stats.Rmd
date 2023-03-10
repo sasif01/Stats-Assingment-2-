@@ -122,6 +122,7 @@ y <- x - 2 * x^2 + rnorm (100)
 
 
 ```{r}
+#Adding the plot
 plot(x, y)
 #from the plot we see that the relationship between x and y appears more quadratic then linear. 
 #X range from -2 to 2, and Y from -8 to 2 
@@ -132,23 +133,28 @@ plot(x, y)
 #Note you may find it helpful to use the data.frame() function to create a single data set containing both X and Y.
 
 ```{r}
+#Creating a dataframe
 df2 = data.frame(y,x)
 set.seed(101)
 
-#i.
+#i.Linear model Y = beta_0 + beta_1*X + epsilon 
 glm.fit = glm(y~x)
+#Generate LOOCV errors
 cv.glm(df2,glm.fit)$delta[1]
 
-#ii.
+#ii. Quadratic model Y= beta_0 + beta_1*X + beta_2*^2 + epsilon 
 fit.glm.2 <- glm(y~ poly(x,2))
+#Generate LOOCV errors
 cv.glm(df2, fit.glm.2)$delta[1]
 
-#iii.
+#iii.Cubic model Y= beta_0 + beta_1*X + beta_2*^2 + beta_3*X^3 + epsilon 
 fit.glm.3 <- glm(y~poly(x,3))
+#Generate LOOCV errors
 cv.glm(df2, fit.glm.3)$delta[1]
 
-#iv.
+#iv. 4th degree model Y= beta_0 + beta_1*X + beta_2*^2 + beta_3*X^3 + beta_4*X^4 + epsilon 
 fit.glm.4 <- glm(y~poly(x,4))
+#Generate LOOCV errors
 cv.glm(df2, fit.glm.4)$delta[1]
 
 ```
