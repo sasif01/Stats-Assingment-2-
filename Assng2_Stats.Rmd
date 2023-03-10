@@ -248,7 +248,7 @@ cv.glm(df2, fit.glm.4)$delta[1]
 
 #(f) Comment on the statistical significance of the coefficient estimates that results from fitting each of the models in (c) using least squares. Do these results agree with the conclusions drawn based on the cross-validation results?
 
-The p-values show that linear and quadratic values are statistically significant (even at the 5% level of significance) while cubic and 4th degree values are not. The AIC across all model is lowest for the quadratic model, indicating that using additional predictors is not necessary. This result is consistent with the cross validation results above. 
+The p-values show that linear and quadratic values are statistically significant (even at the 5% level of significance) while cubic and 4th degree values are not. The AIC across all model is lowest for the quadratic model, indicating that using additional predictors is not necessary. This result is consistent with the cross validation results above, which also suggest the use of a quadratic model in favor the rest. 
 
 ```{r}
 #Summary output will give least Square estimates for each predictor across all models
