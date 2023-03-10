@@ -38,7 +38,7 @@ e <- rnorm(100)
 Our chosen constants are ??0 = 1,  ??1 = 2, ??2 = 3, ??3 = 4. Using these, we generate a response vector, Y, of length 100.
 
 ```{r}
-Y <- 1+2*X + 3*X^2 - 4*X^3 + e
+Y <- 1+(2*X) + (3*X^2) + (4*X^3) + e
 ```
 
 #(c) Use the regsubsets() function to perform best subset selection in order to choose the best model containing the predictors X,X2, . . . ,X10. What is the best model obtained according to AIC, BIC, and adjusted R2? Show some plots to provide evidence for your answer, and report the coefficients of the best model obtained. Note you will need to use the data.frame() function to create a single data set containing both X and Y.
@@ -47,8 +47,8 @@ Y <- 1+2*X + 3*X^2 - 4*X^3 + e
 #Creating a data-frame using Y and X
 df= data.frame(Y, X)
 
-#Using regsubset function to determine the best, up to ten variable models
-mod <- regsubsets(Y~poly(X,10), data=df, nvmax=10) 
+#Using regsubset function to determine the best, up to ten variable models. raw = T is used to for the raw polynomials in favor of orthogonal polynomials
+mod <- regsubsets(Y~poly(X,10,raw=TRUE), data=df, nvmax=10) 
 (mod_summ = summary(mod))
 
 # Set up a 2x2 grid so we can look at 4 plots at once
@@ -63,7 +63,7 @@ points(adj_r2_max, mod_summ$adjr2[adj_r2_max], col ="red", cex = 2, pch = 20)
 
 #plotting the Cp for each of the ten polynomial models. Cp will give the same reuslts as the AIC value.
 plot(mod_summ$cp, xlab = "Number of Variables", ylab = "Cp", type = "l")
-#Determining the minimum Cp values across all ten models - 4
+#Determining the minimum Cp values across all ten models - 3
 cp_min = which.min(mod_summ$cp) 
 #Adding the min value to the plot
 points(cp_min, mod_summ$cp[cp_min], col = "red", cex = 2, pch = 20)
@@ -77,13 +77,12 @@ points(bic_min, mod_summ$bic[bic_min], col = "red", cex = 2, pch = 20)
 
 ```
 
-From the different metrics (adjR^2, Cp/AIC, BIC), we get slightly different best-fit models. The model with the lowest Cp/AIC score included 4 predictors (X^1, X^2, X^3, X^10), while the lowest BIC score only included 3 (X^1, X^2, X^3). Additionally, the model with the highest adjusted R-squared included 5 predictors (X^1, X^2, X^3, X^6, X^10). All metrics agree that the first three predictors need to be included (X^1, X^2, X^3), whereas some suggest additional variables. BIC, in particular, tends to penalize large models, which explain the use of only the minimum number of predictors. Overall, the best fit models all include at least 3 polynomials (X^1, X^2, X^3), , Y=3.403752-88.900257x+31.031738x^2-88.935185x^3
+From the different metrics (adjR^2, Cp/AIC, BIC), we get only slightly different best-fit models. The model with the lowest Cp/AIC score included 3 predictors (X^1, X^2, X^3), while the lowest BIC score also included 3 (X^1, X^2, X^3). Additionally, the model with the highest adjusted R-squared included 5 predictors (X^1, X^2, X^3, X^4, X^10). All metrics agree that the first three predictors need to be included (X^1, X^2, X^3), whereas one suggest additional variables. BIC, in particular, tends to penalize large models, which explain the use of only the minimum number of predictors. Overall, the best fit models all include at least 3 polynomials (X^1, X^2, X^3), Y = 1.115610 + 2.012231x + 2.997645x^2 + 3.962027x^3. From this model, we see that the coefficients for each predictor are very similar to the values used to generate the dataset. Further indicating that the model is a good fit for the data. 
 
 ```{r}
 #Coefficients for the 3-predictor model
 coefficients(mod, id=3)
 ```
-
 
 # (d) 
 
@@ -92,7 +91,7 @@ coefficients(mod, id=3)
 
 ```{r}
 # Forward selection using regsubset function
-regfit_fwd = regsubsets(Y~poly(X,10), data=df, nvmax = 10, method = "forward")
+regfit_fwd = regsubsets(Y~poly(X,10, raw=T), data=df, nvmax = 10, method = "forward")
 fwd_summ = summary(regfit_fwd)
 
 # Set up a 2x2 grid so we can look at 4 plots at once
@@ -100,14 +99,14 @@ par(mfrow = c(2,2))
 
 #plotting the Adjusted R^2 for each of the ten polynomial models.
 plot(fwd_summ$adjr2, xlab = "Number of Variables", ylab = "Adjusted RSq", type = "l")
-#Determines the maximum Adjusted R^2 value from all models - 5 
+#Determines the maximum Adjusted R^2 value from all models - 4 
 adj_r2_max_fwd = which.max(fwd_summ$adjr2)
 #Adding the max value to the plot
 points(adj_r2_max_fwd, fwd_summ$adjr2[adj_r2_max_fwd], col ="red", cex = 2, pch = 20)
 
-#plotting the Cp for each of the ten polynomial models. Cp will give the same reuslts as the AIC value.
+#plotting the Cp for each of the ten polynomial models. Cp will give the same results as the AIC value.
 plot(fwd_summ$cp, xlab = "Number of Variables", ylab = "Cp", type = "l")
-#Determining the minimum Cp values across all ten models - 4
+#Determining the minimum Cp values across all ten models - 3
 cp_min_fwd = which.min(fwd_summ$cp) 
 #Adding the min value to the plot
 points(cp_min_fwd, fwd_summ$cp[cp_min_fwd], col = "red", cex = 2, pch = 20)
@@ -121,25 +120,25 @@ points(bic_min_fwd, fwd_summ$bic[bic_min_fwd], col = "red", cex = 2, pch = 20)
 
 
 ```
-The minimum and maximum Cp/AIC, BIC, and adj R^2 values for the model show the same results as the in c). Forward selection also suggests that at least three predictors are necessary (X^1, X^2, X^3). 
+The minimum and maximum Cp/AIC, BIC, and adj R^2 values for the model show the almost same results as the in c). The adj R^2 values from the forward selection suggest that 4, rather then 5 predictors be used (X^1, X^2, X^3, X^10). Forward selection also suggests that at least three predictors are necessary (X^1, X^2, X^3), similar to c)
 
 ```{r}
 # Backward selection using regsubset function 
-regfit_bwd = regsubsets(Y~poly(X,10), data=df, nvmax = 10, method = "backward")
+regfit_bwd = regsubsets(Y~poly(X,10, raw=T), data=df, nvmax = 10, method = "backward")
 bwd_summ = summary(regfit_bwd)
 # Set up a 2x2 grid so we can look at 4 plots at once
 par(mfrow = c(2,2))
 
 #plotting the Adjusted R^2 for each of the ten polynomial models.
 plot(bwd_summ$adjr2, xlab = "Number of Variables", ylab = "Adjusted RSq", type = "l")
-#Determines the maximum Adjusted R^2 value from all models - 5 
+#Determines the maximum Adjusted R^2 value from all models - 9 
 adj_r2_max_bwd = which.max(bwd_summ$adjr2)
 #Adding the max value to the plot
 points(adj_r2_max_bwd, bwd_summ$adjr2[adj_r2_max_bwd], col ="red", cex = 2, pch = 20)
 
 #plotting the Cp for each of the ten polynomial models. Cp will give the same reuslts as the AIC value.
 plot(bwd_summ$cp, xlab = "Number of Variables", ylab = "Cp", type = "l")
-#Determining the minimum Cp values across all ten models - 4
+#Determining the minimum Cp values across all ten models - 3
 cp_min_bwd = which.min(bwd_summ$cp) 
 #Adding the min value to the plot
 points(cp_min_bwd, bwd_summ$cp[cp_min_bwd], col = "red", cex = 2, pch = 20)
@@ -154,7 +153,7 @@ points(bic_min_bwd, bwd_summ$bic[bic_min_bwd], col = "red", cex = 2, pch = 20)
 
 ```
 
-Similarly, backward selection also produces the same Cp/AIC, BIC and adj R^2 model results as the previous two sub-setting methods. Each metric suggests keeping in the first three predictors (X^1, X^2, X^3), whereas some additional predictors (X^6 or X^10) are included to reduce Cp/AIC and improve Adj R^2.
+Similarly, backward selection also produces the same Cp/AIC, BIC  model results as the previous two sub-setting methods. However the adj R^2 suggests the use of a 9th degree polynomial model to explain the data. This is similar to the Forward selection, where adj R^2 also suggested the use of a higher order variable. The use of too many predictors (higher-order) might result in overfitting the model to the data, which would reduce the overall predictive accuracy. Ultimately, each method suggests keeping in the first three predictors (X^1, X^2, X^3), whereas some additional predictors (X^4 or X^10) are included in some cases to improve Adj R^2.
 
 Overall, the results from the three methods are all very similar and suggest the same predictors for the best - fit model. 
 
