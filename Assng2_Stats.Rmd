@@ -83,7 +83,6 @@ From the different metrics (adjR^2, Cp/AIC, BIC), we get only slightly different
 #Coefficients for the 3-predictor model
 coefficients(mod, id=3)
 ```
-
 # (d) 
 
 **Repeat (c), using forward stepwise selection and also using backwards stepwise selection. How does your answer compare to the results in (c)?**
@@ -126,6 +125,8 @@ The minimum and maximum Cp/AIC, BIC, and adj R^2 values for the model show the a
 # Backward selection using regsubset function 
 regfit_bwd = regsubsets(Y~poly(X,10, raw=T), data=df, nvmax = 10, method = "backward")
 bwd_summ = summary(regfit_bwd)
+
+#Figure 1 
 # Set up a 2x2 grid so we can look at 4 plots at once
 par(mfrow = c(2,2))
 
@@ -155,7 +156,24 @@ points(bic_min_bwd, bwd_summ$bic[bic_min_bwd], col = "red", cex = 2, pch = 20)
 
 Similarly, backward selection also produces the same Cp/AIC, BIC  model results as the previous two sub-setting methods. However the adj R^2 suggests the use of a 9th degree polynomial model to explain the data. This is similar to the Forward selection, where adj R^2 also suggested the use of a higher order variable. The use of too many predictors (higher-order) might result in overfitting the model to the data, which would reduce the overall predictive accuracy. Ultimately, each method suggests keeping in the first three predictors (X^1, X^2, X^3), whereas some additional predictors (X^4 or X^10) are included in some cases to improve Adj R^2.
 
-Overall, the results from the three methods are all very similar and suggest the same predictors for the best - fit model. 
+Overall, the results from the three methods, along with the plot of the curve against the datapoint (Figure 2.), are all very similar and suggest the same predictors for the best-fit model. 
+
+```{r}
+#Figure 2 
+#plot x vs. y
+plot(X, Y, main= "Plotting datapoints with Cubic - Regression Curve") 
+
+#fit polynomial regression model
+fit <- lm(Y ~ poly(X,3, raw=T))
+
+#use model to get predicted values
+pred <- predict(fit)
+ix <- sort(X, index.return=T)$ix
+
+#add polynomial curve to plot
+lines(X[ix], pred[ix], col='red', lwd=2)
+```
+
 
 ## Q2 
 
@@ -185,7 +203,8 @@ From the plot we see that the relationship between x and y appears more quadrati
 
 
 ```{r}
-#Adding the plot
+# Figure 3
+# Adding the plot
 plot(x, y, xlab = "Values of X", ylab = "Values of Y", main="Scatterplot of x vs y")
 ```
 
@@ -269,7 +288,10 @@ summary(fit.glm.3)
 #Only X and X^2 are significant (p-value <0.05), adding in X^3 and X^4 does not improve the fit of the mode. AIC is higher as well (282.3)
 summary(fit.glm.4)
 ```
+
+
 ```{r}
+# Figure 4
 #Plotting the polynomial regression model on top of the data
 ggplot(df2, aes(x,y)) +
   geom_point() +
