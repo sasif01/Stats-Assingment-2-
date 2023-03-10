@@ -48,14 +48,6 @@ mod <- regsubsets(Y~poly(X,10), data=df, nvmax=10)
 # Set up a 2x2 grid so we can look at 4 plots at once
 par(mfrow = c(2,2))
 
-#plotting the Residual Sums of Squares for each of the ten polynomial models.
-plot(mod_summ$rss, xlab = "Number of Variables", ylab = "RSS", type = "l")
-#Determines the minimum RSS value from all models - 10
-rss_min = which.min(mod_summ$rss)
-#Adding the min value to the plot
-points(rss_min, mod_summ$rss[rss_min], col ="red", cex = 2, pch = 20)
-
-
 #plotting the Adjusted R^2 for each of the ten polynomial models.
 plot(mod_summ$adjr2, xlab = "Number of Variables", ylab = "Adjusted RSq", type = "l")
 #Determines the maximum Adjusted R^2 value from all models - 5 
@@ -63,7 +55,7 @@ adj_r2_max = which.max(mod_summ$adjr2)
 #Adding the max value to the plot
 points(adj_r2_max, mod_summ$adjr2[adj_r2_max], col ="red", cex = 2, pch = 20)
 
-#plotting the Cp for each of the ten polynomial models.
+#plotting the Cp for each of the ten polynomial models. Cp will give the same reuslts as the AIC value.
 plot(mod_summ$cp, xlab = "Number of Variables", ylab = "Cp", type = "l")
 #Determining the minimum Cp values across all ten models - 4
 cp_min = which.min(mod_summ$cp) 
@@ -79,8 +71,8 @@ points(bic_min, mod_summ$bic[bic_min], col = "red", cex = 2, pch = 20)
 
 ```
 
-From this model we see that the predictor variable X, by itself, is always significant. It is always included in the model. From the different metrics, we get slightly different best-fit models. The model with the lowest Cp score included 4 predictor (X^1, X^2, X^3, X^10), while the lowest BIC score only included 3 (X^1, X^2, X^3). Additional, the model with the highest adjusted R-squared included 5 predictors (X^1, X^2, X^3, X^6, X^10). 
-Given that really all metrics agree that the first three preditors need be included (X^1, X^2, X^3)
+From the different metrics (adj R^2, Cp/AIC, BIC), we get slightly different best-fit models. The model with the lowest Cp/AIC score included 4 predictor (X^1, X^2, X^3, X^10), while the lowest BIC score only included 3 (X^1, X^2, X^3). Additionally, the model with the highest adjusted R-squared included 5 predictors (X^1, X^2, X^3, X^6, X^10).
+Given that really all metrics agree that the first three predictors need be included (X^1, X^2, X^3)
 From the plots of various metrics of model aqeqancy we see that the best model is one with three predictor vairables. from the summary output we see that this is the model 
 
 ```{r}
