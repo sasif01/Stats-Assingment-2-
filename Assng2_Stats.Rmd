@@ -182,7 +182,7 @@ plot(x, y)
 #Note you may find it helpful to use the data.frame() function to create a single data set containing both X and Y.
 
 ```{r}
-#Creating a dataframe
+#Creating a data-frame
 df2 = data.frame(y,x)
 set.seed(101)
 
