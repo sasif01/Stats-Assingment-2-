@@ -71,7 +71,7 @@ points(bic_min, mod_summ$bic[bic_min], col = "red", cex = 2, pch = 20)
 
 ```
 
-From the different metrics (adjR^2, Cp/AIC, BIC), we get slightly different best-fit models. The model with the lowest Cp/AIC score included 4 predictors (X^1, X^2, X^3, X^10), while the lowest BIC score only included 3 (X^1, X^2, X^3). Additionally, the model with the highest adjusted R-squared included 5 predictors (X^1, X^2, X^3, X^6, X^10). All metrics agree that the first three predictors need to be included (X^1, X^2, X^3), whereas some suggest additional variables. BIC, in particular, tends to penalize large models, which explain the use of only the minimum number of predictors. Overall, the best fit models all include at least 3 polynomials (X^1, X^2, X^3).
+From the different metrics (adjR^2, Cp/AIC, BIC), we get slightly different best-fit models. The model with the lowest Cp/AIC score included 4 predictors (X^1, X^2, X^3, X^10), while the lowest BIC score only included 3 (X^1, X^2, X^3). Additionally, the model with the highest adjusted R-squared included 5 predictors (X^1, X^2, X^3, X^6, X^10). All metrics agree that the first three predictors need to be included (X^1, X^2, X^3), whereas some suggest additional variables. BIC, in particular, tends to penalize large models, which explain the use of only the minimum number of predictors. Overall, the best fit models all include at least 3 polynomials (X^1, X^2, X^3), , Y=3.403752-88.900257x+31.031738x^2-88.935185x^3
 
 ```{r}
 #Coefficients for the 3-predictor model
@@ -181,7 +181,7 @@ From the plot we see that the relationship between x and y appears more quadrati
 
 ```{r}
 #Adding the plot
-plot(x, y)
+plot(x, y, xlab = "Values of X", ylab = "Values of Y", main="Scatterplot of x vs y")
 ```
 
 **c) Set a random seed, and then compute the LOOCV errors that result from fitting the following four models using least squares:**
@@ -243,12 +243,25 @@ cv.glm(df2, fit.glm.4)$delta[1]
 
 #(e) Which of the models in (c) had the smallest LOOCV error? Is this what you expected? Explain your answer.
 ```{r}
-#According to the plot from 2b., we expected the true form of Y is quadratic. Therefore, it is expected that the lowest LOOCV test error rate is the quadratic polynomial. 
+#According to the plot from 2b., we expected the true form of Y is quadratic. Therefore, it is expected that the lowest LOOCV test error rate is the quadratic polynomial (ie.  ???? = ????0 + ????1???? + ????2???? 2+???) 
 ```
 
 #(f) Comment on the statistical significance of the coefficient estimates that results from fitting each of the models in (c) using least squares. Do these results agree with the conclusions drawn based on the cross-validation results?
+
+The p-values show that linear and quadratic values are statistically significant (even at the 5% level of significance) while cubic and 4th degree values are not. The AIC across all model is lowest for the quadratic model, indicating that using additional predictors is not necessary. This result is consistent with the cross validation results above. 
+
 ```{r}
+#Summary output will give least Square estimates for each predictor across all models
+
+#On its own, X is only slightly significantly associated with y. AIC is also large (478.88)
+summary(glm.fit)
+#Both X and X^2 are highly significant in the model (p-values << 0.05). AIC decreased by nearly half (280.17)
+summary(fit.glm.2)
+
+#Only X and X^2 are significant (p-value <0.05), adding in X^3 does not improve the fit of the mode. AIC is also higher when X^3 is included (282.09)
+summary(fit.glm.3)
+
+#Only X and X^2 are significant (p-value <0.05), adding in X^3 and X^4 does not improve the fit of the mode. AIC is higher as well (282.3)
 summary(fit.glm.4)
-#The p-values show that linear and quadratic values are statistically significant while cubic and 4th degree values are not. This result is consistent with the cross validation results above. 
 ```
 
