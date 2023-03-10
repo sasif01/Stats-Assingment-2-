@@ -73,6 +73,12 @@ points(bic_min, mod_summ$bic[bic_min], col = "red", cex = 2, pch = 20)
 
 From the different metrics (adjR^2, Cp/AIC, BIC), we get slightly different best-fit models. The model with the lowest Cp/AIC score included 4 predictors (X^1, X^2, X^3, X^10), while the lowest BIC score only included 3 (X^1, X^2, X^3). Additionally, the model with the highest adjusted R-squared included 5 predictors (X^1, X^2, X^3, X^6, X^10). All metrics agree that the first three predictors need to be included (X^1, X^2, X^3), whereas some suggest additional variables. BIC, in particular, tends to penalize large models, which explain the use of only the minimum number of predictors. Overall, the best fit models all include at least 3 polynomials (X^1, X^2, X^3).
 
+```{r}
+#Coefficients for the 3-predictor model
+coefficients(mod, id=3)
+```
+
+
 # (d) 
 
 **Repeat (c), using forward stepwise selection and also using backwards stepwise selection. How does your answer compare to the results in (c)?**
